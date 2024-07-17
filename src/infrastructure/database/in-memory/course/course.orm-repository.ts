@@ -56,7 +56,11 @@ export class CourseOrmRepository extends CourseRepository {
             while (whileLimit() && InMemoryDatabase.data.length > i) {
                 const ormCourse = InMemoryDatabase.data[i];
                 i++;
-                if ((!filter.name || filter.name === ormCourse.name) && (!filter.coachId || filter.coachId.value === ormCourse.coachId)) {
+                if (
+                    (!filter.name || filter.name === ormCourse.name) &&
+                    (!filter.coachId ||
+                        filter.coachId.value === ormCourse.coachId)
+                ) {
                     data.push(ormCourse);
                 }
             }

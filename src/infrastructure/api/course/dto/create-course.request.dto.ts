@@ -1,7 +1,6 @@
 import { IsPositive, IsString, Length } from 'class-validator';
 
 export class CreateCourseRequestDto {
-    @IsString()
     @Length(1)
     readonly name: string;
 

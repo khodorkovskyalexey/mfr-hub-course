@@ -4,7 +4,8 @@ import {
     CreateCourseUseCase,
 } from '../../src/application/use-case';
 import { CourseRepository, Id } from '../../src/domain';
-import { courseRepositoryMock } from './mocks/course.repository.mock';
+import { courseRepositoryMock } from './mock/course.repository.mock';
+import { CourseValidateDto } from './dto';
 
 describe('CreateCourseUseCase', () => {
     let useCase: CreateCourseUseCase;
@@ -29,10 +30,7 @@ describe('CreateCourseUseCase', () => {
         const dto = new CreateCourseUseCaseDto('Course1', '', coachId);
 
         const course = await useCase.execute(dto);
-        expect(course.id).toBeDefined();
-        expect(course.id).toBeInstanceOf(Id);
-        expect(course.name).toBe('Course1');
-        expect(course.description).toBe('');
+        CourseValidateDto.validate(course);
         expect(course.coachId.isEqual(coachId)).toBeTruthy();
     });
 

@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Course, CourseRepository, Id } from '../../src/domain';
 import { DatabaseModule } from '../../src/infrastructure/database/database.module';
+import { CourseValidateDto } from '../use-case/dto';
 
 describe('CourseRepositoryImplementation', () => {
     let repository: CourseRepository;
@@ -27,6 +28,7 @@ describe('CourseRepositoryImplementation', () => {
         it('success', async () => {
             const createdCourse = await repository.add(course);
             expect(course.id.isEqual(createdCourse.id)).toBeTruthy();
+            CourseValidateDto.validate(createdCourse);
         });
     });
 
@@ -35,6 +37,7 @@ describe('CourseRepositoryImplementation', () => {
             const data = await repository.getById(course.id);
             expect(data).not.toBeNull();
             expect(data?.id.isEqual(course.id));
+            CourseValidateDto.validate(data as Course);
         });
 
         it('get by non-existent id', async () => {
@@ -60,21 +63,25 @@ describe('CourseRepositoryImplementation', () => {
         it('get all courses', async () => {
             const courses = await repository.get();
             expect(courses.length).toBe(5);
+            courses.forEach((course) => CourseValidateDto.validate(course));
         });
 
         it('get course by name', async () => {
             const courses = await repository.get({ name: 'Course1' });
             expect(courses.length).toBe(2);
+            courses.forEach((course) => CourseValidateDto.validate(course));
         });
 
         it('get course by coachId', async () => {
             const courses = await repository.get({ coachId });
             expect(courses.length).toBe(4);
+            courses.forEach((course) => CourseValidateDto.validate(course));
         });
 
         it('get course with limit', async () => {
             const courses = await repository.get({}, { limit: 3 });
             expect(courses.length).toBe(3);
+            courses.forEach((course) => CourseValidateDto.validate(course));
         });
     });
 
@@ -89,6 +96,7 @@ describe('CourseRepositoryImplementation', () => {
             const updatedCourse = await repository.update(data);
             expect(course.id.isEqual(updatedCourse.id)).toBeTruthy();
             expect(updatedCourse.description).toBe('New description');
+            CourseValidateDto.validate(updatedCourse);
         });
 
         it('wrong id', async () => {

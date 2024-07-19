@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetCoursesUseCase } from '../../src/application/use-case';
+import {
+    GetCoursesFilterDto,
+    GetCoursesUseCase,
+} from '../../src/application/use-case';
 import { CourseRepository, Id } from '../../src/domain';
 import { courseRepositoryMock } from './mock/course.repository.mock';
 import { CourseValidateDto } from './dto';
-import { GetCoursesFilterDto } from '../../src/application/use-case/course/get-courses/get-courses.use-case.dto';
 
 describe('GetCoursesUseCase', () => {
     let useCase: GetCoursesUseCase;

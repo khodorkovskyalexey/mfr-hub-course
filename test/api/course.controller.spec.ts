@@ -1,10 +1,9 @@
 import * as request from 'supertest';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { Id } from '../../src/domain';
+import { Course, Id } from '../../src/domain';
 import { ApiModule } from '../../src/infrastructure/api/api.module';
-import { createCourseUseCaseMock } from './mock/create-course.use-case.mock';
-import { mockProviders } from './mock';
+import { mockIds, mockProviders } from './mock';
 import { CourseResponseDto } from '../../src/infrastructure/api/course/dto';
 
 describe('CourseController', () => {
@@ -34,15 +33,11 @@ describe('CourseController', () => {
     });
 
     describe('POST /courses', () => {
-        afterEach(() => {
-            createCourseUseCaseMock.reset();
-        });
-
         it('success create', async () => {
             const dto = {
                 name: '1',
                 description: '',
-                coachId: Id.generate().value,
+                coachId: mockIds.coachId.value,
             };
 
             return request(app.getHttpServer())
@@ -52,10 +47,12 @@ describe('CourseController', () => {
                 .expect((res) => {
                     expect(res.body).toEqual(
                         CourseResponseDto.fromEntity(
-                            createCourseUseCaseMock.execute({
-                                ...dto,
-                                coachId: new Id(dto.coachId),
-                            }),
+                            new Course(
+                                mockIds.id,
+                                dto.name,
+                                dto.description,
+                                new Id(dto.coachId),
+                            ),
                         ),
                     );
                 });
@@ -112,6 +109,56 @@ describe('CourseController', () => {
                 .expect(400)
                 .expect((res) => {
                     expect(res.body.message?.length).toBe(1);
+                });
+        });
+    });
+
+    describe('PATCH /courses/:id', () => {
+        it('success', async () => {
+            const dto = {
+                name: '1',
+                description: '',
+            };
+
+            return request(app.getHttpServer())
+                .patch(`/courses/${mockIds.id.value}`)
+                .send(dto)
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body).toEqual(
+                        CourseResponseDto.fromEntity(
+                            new Course(mockIds.id, '1', '', mockIds.coachId),
+                        ),
+                    );
+                });
+        });
+
+        it('bad id', async () => {
+            const dto = {
+                name: '1',
+            };
+
+            return request(app.getHttpServer())
+                .patch('/courses/bad_id')
+                .send(dto)
+                .expect(400)
+                .expect((res) => {
+                    expect(res.body.message?.length).toBe(1);
+                });
+        });
+
+        it('validation failed', async () => {
+            const dto = {
+                name: 1,
+                description: 1,
+            };
+
+            return request(app.getHttpServer())
+                .patch(`/courses/${mockIds.id.value}`)
+                .send(dto)
+                .expect(400)
+                .expect((res) => {
+                    expect(res.body.message?.length).toBe(2);
                 });
         });
     });

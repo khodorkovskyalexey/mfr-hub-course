@@ -1,4 +1,4 @@
-import { GetCoursesFilterDto } from '../../../src/application/use-case/course/get-courses/get-courses.use-case.dto';
+import { GetCoursesFilterDto } from '../../../src/application/use-case';
 import { Course, Id } from '../../../src/domain';
 
 export const getCoursesUseCaseMock = {

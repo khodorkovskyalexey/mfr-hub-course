@@ -14,10 +14,8 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
-    "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:ci": "jest --coverage --coverageReporters=json-summary"
   },
   "dependencies": {
     "@fastify/static": "^7.0.4",
@@ -69,7 +67,9 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.(t|j)s",
+      "!src/main.ts",
+      "!src/app.module.ts"
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node"

@@ -39,7 +39,7 @@ async function bootstrap() {
             transform: true,
         }),
     );
-    useSwagger(app);
+    // useSwagger(app);
 
     await app.listen(3000, () => {
         Logger.log('Running on port 3000', 'NestApplication');

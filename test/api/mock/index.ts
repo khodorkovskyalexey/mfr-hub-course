@@ -1,29 +1,34 @@
 import {
     CreateCourseUseCase,
+    GetCourseByIdUseCase,
     GetCoursesUseCase,
     UpdateCourseUseCase,
 } from '../../../src/application/use-case';
 import { Id } from '../../../src/domain';
-import { createCourseUseCaseMock } from './create-course.use-case.mock';
-import { getCoursesUseCaseMock } from './get-courses.use-case.mock';
-import { updateCourseUseCaseMock } from './update-course.use-case.mock';
+import { courseUseCaseMocks } from './course.use-case.mock';
 
 export const mockProviders = [
     {
         provider: CreateCourseUseCase,
-        mock: createCourseUseCaseMock,
+        mock: courseUseCaseMocks.createCourse,
     },
     {
         provider: GetCoursesUseCase,
-        mock: getCoursesUseCaseMock,
+        mock: courseUseCaseMocks.getCourses,
+    },
+    {
+        provider: GetCourseByIdUseCase,
+        mock: courseUseCaseMocks.getCourseById,
     },
     {
         provider: UpdateCourseUseCase,
-        mock: updateCourseUseCaseMock,
+        mock: courseUseCaseMocks.updateCourse,
     },
 ];
 
 export const mockIds = {
     id: Id.generate(),
     coachId: Id.generate(),
+    name: '1',
+    description: '',
 };

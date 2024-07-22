@@ -82,6 +82,16 @@ describe('CourseController', () => {
                 .expect(200)
                 .expect((res) => {
                     expect(res.body.length).toBe(1);
+                    expect(res.body[0]).toEqual(
+                        CourseResponseDto.fromEntity(
+                            new Course(
+                                mockIds.id,
+                                mockIds.name,
+                                mockIds.description,
+                                mockIds.coachId,
+                            ),
+                        ),
+                    );
                 });
         });
 
@@ -91,6 +101,16 @@ describe('CourseController', () => {
                 .expect(200)
                 .expect((res) => {
                     expect(res.body.length).toBe(1);
+                    expect(res.body[0]).toEqual(
+                        CourseResponseDto.fromEntity(
+                            new Course(
+                                mockIds.id,
+                                mockIds.name,
+                                mockIds.description,
+                                mockIds.coachId,
+                            ),
+                        ),
+                    );
                 });
         });
 
@@ -106,6 +126,35 @@ describe('CourseController', () => {
         it('validation failed', async () => {
             return request(app.getHttpServer())
                 .get('/courses?coachId=text')
+                .expect(400)
+                .expect((res) => {
+                    expect(res.body.message?.length).toBe(1);
+                });
+        });
+    });
+
+    describe('GET /courses/:id', () => {
+        it('success', async () => {
+            return request(app.getHttpServer())
+                .get(`/courses/${mockIds.id.value}`)
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body).toEqual(
+                        CourseResponseDto.fromEntity(
+                            new Course(
+                                mockIds.id,
+                                mockIds.name,
+                                mockIds.description,
+                                mockIds.coachId,
+                            ),
+                        ),
+                    );
+                });
+        });
+
+        it('bad id validation failed', async () => {
+            return request(app.getHttpServer())
+                .get('/courses/bad_id')
                 .expect(400)
                 .expect((res) => {
                     expect(res.body.message?.length).toBe(1);

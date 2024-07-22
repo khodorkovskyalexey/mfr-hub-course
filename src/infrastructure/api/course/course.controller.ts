@@ -15,6 +15,8 @@ import {
     UpdateCourseUseCase,
     UpdateCourseUseCaseDto,
     GetCoursesFilterDto,
+    GetCourseByIdUseCase,
+    GetCourseByIdUseCaseDto,
 } from '../../../application/use-case';
 import {
     CourseResponseDto,
@@ -36,6 +38,7 @@ export class CourseController {
         private readonly createCourseUseCase: CreateCourseUseCase,
         private readonly getCoursesUseCase: GetCoursesUseCase,
         private readonly updateCourseUseCase: UpdateCourseUseCase,
+        private readonly getCourseByIdUseCase: GetCourseByIdUseCase,
     ) {}
 
     @ApiResponse({
@@ -70,6 +73,20 @@ export class CourseController {
         );
 
         return courses.map(CourseResponseDto.fromEntity);
+    }
+
+    @ApiResponse({
+        status: HttpStatus.OK,
+        type: CourseResponseDto,
+    })
+    @ApiOperation({ summary: 'Get course by id' })
+    @Get(':id')
+    async getById(@Param() { id }: IdParameter): Promise<CourseResponseDto> {
+        const course = await this.getCourseByIdUseCase.execute(
+            new GetCourseByIdUseCaseDto(new Id(id)),
+        );
+
+        return CourseResponseDto.fromEntity(course);
     }
 
     @ApiResponse({

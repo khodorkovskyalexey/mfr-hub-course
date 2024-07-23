@@ -7,6 +7,7 @@ import {
     FastifyAdapter,
     NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { ConfigService, NodeEnvType } from './infrastructure/config';
 
 function useSwagger(app: INestApplication) {
     const config = new DocumentBuilder()
@@ -39,10 +40,18 @@ async function bootstrap() {
             transform: true,
         }),
     );
-    useSwagger(app);
 
-    await app.listen(3000, () => {
-        Logger.log('Running on port 3000', 'NestApplication');
+    const configService = app.get<ConfigService>(ConfigService);
+    const port = configService.port ?? 3000;
+    const env = configService.nodeEnv;
+
+    if (env !== NodeEnvType.Production) {
+        useSwagger(app);
+    }
+
+    await app.listen(port, () => {
+        Logger.log(`Running on port ${port}`, 'NestApplication');
+        Logger.log(`Environment ${env}`, 'NestApplication');
     });
 }
 bootstrap();

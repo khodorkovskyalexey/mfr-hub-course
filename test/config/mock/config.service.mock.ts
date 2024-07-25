@@ -1,3 +1,6 @@
 import { ConfigServiceAdapter } from '../../../src/infrastructure/config';
 
-export const configServiceMock = () => new ConfigServiceAdapter();
+export const configServiceMock = (path: string) => {
+    ConfigServiceAdapter.ConfigPath = path;
+    return new ConfigServiceAdapter();
+};

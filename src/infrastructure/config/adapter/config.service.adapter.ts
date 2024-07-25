@@ -21,9 +21,11 @@ class ConfigFile implements ConfigService {
 
 @Injectable()
 export class ConfigServiceAdapter extends ConfigFile {
+    static ConfigPath = '.env';
+
     constructor() {
         super();
-        const config = this.load(process.env.CONFIG_PATH ?? '.env');
+        const config = this.load(ConfigServiceAdapter.ConfigPath);
         Object.assign(this, config);
     }
 

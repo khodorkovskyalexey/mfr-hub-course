@@ -1,4 +1,10 @@
 [![cov](https://khodorkovskyalexey.github.io/mfr-hub-course/badges/coverage.svg)](https://github.com/khodorkovskyalexey/mfr-hub-course/actions)
+
+# MfrHub services
+[MfrHub Authorization](https://github.com/Lepeshkin-V/mfr-hub-authorization)
+
+[MfrHub Course](https://github.com/khodorkovskyalexey/mfr-hub-course)
+
 # User stories
 https://basalt-pizza-bb1.notion.site/User-stories-b7adcc1a939644ccb86f3204657a0320?pvs=4
 ## Тренер

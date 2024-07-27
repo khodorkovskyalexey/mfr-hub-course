@@ -14,6 +14,11 @@ function useSwagger(app: INestApplication) {
         .setTitle(name)
         .setDescription(description)
         .setVersion(version)
+        .addBearerAuth({
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+        })
         .build();
 
     const document = SwaggerModule.createDocument(app, config);

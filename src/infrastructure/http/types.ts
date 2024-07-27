@@ -4,7 +4,7 @@ export type HttpResponse<T> = {
 };
 
 export type HttpOptions = {
-    headers?: HttpHeaders;
+    headers?: HttpHeaders & { 'Authorization'?: HttpHeaders['Authorization'] };
 };
 
 export type HttpHeaders = {

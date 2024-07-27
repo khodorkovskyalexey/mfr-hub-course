@@ -1,14 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { Expose, plainToClass, Type } from 'class-transformer';
-import { IsEnum, IsNumber, validateSync } from 'class-validator';
+import { Expose, plainToClass, Transform, Type } from 'class-transformer';
+import {
+    IsEnum,
+    IsNotEmpty,
+    IsNumber,
+    IsString,
+    ValidateNested,
+    validateSync,
+} from 'class-validator';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import * as dotenv from 'dotenv';
 import { NodeEnvType } from '../types';
-import { ConfigService } from '../port/config.service';
+import { ApiConfig, ConfigService } from '../port/config.service';
 
 @Expose()
-class ConfigFile implements ConfigService {
+class ApiConfigImpl implements ApiConfig {
+    @Expose({ name: 'API_AUTH' })
+    @IsString()
+    @IsNotEmpty()
+    auth: string;
+}
+
+@Expose()
+class ConfigFile extends ConfigService {
     @Expose({ name: 'NODE_ENV' })
     @IsEnum(NodeEnvType)
     nodeEnv: NodeEnvType;
@@ -17,6 +32,13 @@ class ConfigFile implements ConfigService {
     @IsNumber()
     @Type(() => Number)
     port: number;
+
+    @Expose()
+    @ValidateNested()
+    @Transform(({ obj }) =>
+        plainToClass(ApiConfigImpl, obj, { excludeExtraneousValues: true }),
+    )
+    api: ApiConfigImpl;
 }
 
 @Injectable()
@@ -42,7 +64,9 @@ export class ConfigServiceAdapter extends ConfigFile {
     }
 
     private validate(config: Record<string, unknown>) {
-        const validatedConfig = plainToClass(ConfigFile, config);
+        const validatedConfig = plainToClass(ConfigFile, config, {
+            excludeExtraneousValues: true,
+        });
 
         const errors = validateSync(validatedConfig, {
             enableDebugMessages: true,

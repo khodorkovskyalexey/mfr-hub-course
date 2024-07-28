@@ -1,4 +1,4 @@
-import { HttpOptions } from "../../../src/infrastructure/http";
+import { HttpOptions } from '../../../src/infrastructure/http';
 
 export const httpServiceMock = {
     get: async (_url: string, options: HttpOptions) => {

@@ -14,7 +14,10 @@ describe('AuthGuard', () => {
 
     beforeAll(async () => {
         const app: TestingModule = await Test.createTestingModule({
-            imports: [AuthModule, ConfigModule],
+            imports: [
+                AuthModule,
+                ConfigModule.forRoot({ useValue: { configPath: '' } }),
+            ],
         })
             .overrideProvider(HttpService)
             .useValue(httpServiceMock)

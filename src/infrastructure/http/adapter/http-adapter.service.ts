@@ -15,7 +15,7 @@ export class HttpAdatperService extends HttpService {
     }
 
     async get<T>(url: string, options: HttpOptions): Promise<HttpResponse<T>>;
-    async get<T extends Object>(
+    async get<T extends object>(
         url: string,
         options: HttpOptions,
         validatorClass?: ClassConstructor<T>,

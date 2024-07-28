@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Expose, plainToClass, Transform, Type } from 'class-transformer';
 import {
     IsEnum,
@@ -11,8 +11,9 @@ import {
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import * as dotenv from 'dotenv';
-import { NodeEnvType } from '../types';
+import { NodeEnvType } from '../types/enums';
 import { ApiConfig, ConfigService } from '../port/config.service';
+import { CONFIG_OPTIONS, ConfigOptions } from '../types';
 
 @Expose()
 class ApiConfigImpl implements ApiConfig {
@@ -43,11 +44,9 @@ class ConfigFile extends ConfigService {
 
 @Injectable()
 export class ConfigServiceAdapter extends ConfigFile {
-    static ConfigPath = '.env';
-
-    constructor() {
+    constructor(@Inject(CONFIG_OPTIONS) readonly options: ConfigOptions) {
         super();
-        const config = this.load(ConfigServiceAdapter.ConfigPath);
+        const config = this.load(options.configPath);
         Object.assign(this, config);
     }
 

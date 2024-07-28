@@ -7,7 +7,7 @@ export abstract class HttpService {
         options: HttpOptions,
     ): Promise<HttpResponse<T>>;
 
-    abstract get<T extends Object>(
+    abstract get<T extends object>(
         url: string,
         options: HttpOptions,
         validatorClass: ClassConstructor<T>,

@@ -5,6 +5,15 @@ import { ConfigModule } from './infrastructure/config';
 import { AuthModule } from './infrastructure/auth/auth.module';
 
 @Module({
-    imports: [ApiModule, AuthModule, ConfigModule, DatabaseModule],
+    imports: [
+        ApiModule,
+        AuthModule,
+        ConfigModule.forRoot({
+            useValue: {
+                configPath: '.env',
+            },
+        }),
+        DatabaseModule,
+    ],
 })
 export class AppModule {}

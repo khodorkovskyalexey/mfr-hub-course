@@ -1,7 +1,6 @@
-import { Course, Id } from '../../../../domain';
-import { OptionalExclude } from '../../../../shared/types';
+import { Id, IUpdateCourse } from '../../../../domain';
 
-class CourseUpdates implements OptionalExclude<Course, 'id' | 'coachId'> {
+class CourseUpdates implements IUpdateCourse {
     constructor(
         readonly name?: string,
         readonly description?: string,
@@ -12,7 +11,7 @@ export class UpdateCourseUseCaseDto {
     readonly updates: CourseUpdates;
     constructor(
         readonly id: Id,
-        updates: OptionalExclude<Course, 'id' | 'coachId'>,
+        updates: IUpdateCourse,
     ) {
         this.updates = new CourseUpdates(updates.name, updates.description);
     }

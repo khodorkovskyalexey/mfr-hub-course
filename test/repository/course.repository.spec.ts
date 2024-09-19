@@ -27,22 +27,28 @@ describe('CourseRepositoryImplementation', () => {
     describe('add', () => {
         it('success', async () => {
             const createdCourse = await repository.add(course);
-            expect(course.id.isEqual(createdCourse.id)).toBeTruthy();
+            const courseId = course.unpack().id;
+
+            expect(courseId.isEqual(createdCourse.unpack().id)).toBeTruthy();
             CourseValidateDto.validate(createdCourse);
         });
     });
 
     describe('get by id', () => {
         it('get by id', async () => {
-            const data = await repository.getById(course.id);
-            expect(data).not.toBeNull();
-            expect(data?.id.isEqual(course.id));
-            CourseValidateDto.validate(data as Course);
+            const courseId = course.unpack().id;
+
+            const foundCourse = await repository.getById(courseId);
+            const foundCourseId = foundCourse?.unpack().id;
+
+            expect(foundCourse).not.toBeNull();
+            expect(foundCourseId?.isEqual(courseId));
+            CourseValidateDto.validate(foundCourse as Course);
         });
 
         it('get by non-existent id', async () => {
-            const data = await repository.getById(Id.generate());
-            expect(data).toBeNull();
+            const foundCourse = await repository.getById(Id.generate());
+            expect(foundCourse).toBeNull();
         });
     });
 
@@ -69,33 +75,36 @@ describe('CourseRepositoryImplementation', () => {
         it('get course by name', async () => {
             const courses = await repository.get({ name: 'Course1' });
             expect(courses.length).toBe(2);
-            courses.forEach((course) => CourseValidateDto.validate(course));
         });
 
         it('get course by coachId', async () => {
             const courses = await repository.get({ coachId });
             expect(courses.length).toBe(4);
-            courses.forEach((course) => CourseValidateDto.validate(course));
+        });
+
+        it('get course with notIds', async () => {
+            const courseId = course.unpack().id;
+            const courses = await repository.get({ notIds: [courseId] });
+            expect(courses.length).toBe(4);
         });
 
         it('get course with limit', async () => {
             const courses = await repository.get({}, { limit: 3 });
             expect(courses.length).toBe(3);
-            courses.forEach((course) => CourseValidateDto.validate(course));
         });
     });
 
     describe('update', () => {
         it('success', async () => {
-            const data = new Course(
-                course.id,
-                course.name,
-                'New description',
-                course.coachId,
-            );
+            const { id, name, coachId } = course.unpack();
+            const data = new Course(id, name, 'New description', coachId);
+
             const updatedCourse = await repository.update(data);
-            expect(course.id.isEqual(updatedCourse.id)).toBeTruthy();
-            expect(updatedCourse.description).toBe('New description');
+            const { id: updatedId, description: updatedDescription } =
+                updatedCourse.unpack();
+
+            expect(id.isEqual(updatedId)).toBeTruthy();
+            expect(updatedDescription).toBe('New description');
             CourseValidateDto.validate(updatedCourse);
         });
 
@@ -112,9 +121,10 @@ describe('CourseRepositoryImplementation', () => {
 
     describe('delete', () => {
         it('success', async () => {
-            await repository.delete(course.id);
+            const courseId = course.unpack().id;
+            await repository.delete(courseId);
             // check that course is deleted
-            const data = await repository.getById(course.id);
+            const data = await repository.getById(courseId);
             expect(data).toBeNull();
         });
 

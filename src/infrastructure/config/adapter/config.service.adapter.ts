@@ -11,9 +11,8 @@ import {
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import * as dotenv from 'dotenv';
-import { NodeEnvType } from '../types/enums';
 import { ApiConfig, ConfigService } from '../port/config.service';
-import { CONFIG_OPTIONS, ConfigOptions } from '../types';
+import { CONFIG_OPTIONS, ConfigOptions, NodeEnvType } from '../types';
 
 @Expose()
 class ApiConfigImpl implements ApiConfig {

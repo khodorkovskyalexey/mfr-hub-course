@@ -4,6 +4,7 @@ import { Id } from '../id';
 export interface GetCourseFilter {
     coachId?: Id;
     name?: string;
+    notIds?: Id[];
 }
 
 export interface GetCourseOptions {

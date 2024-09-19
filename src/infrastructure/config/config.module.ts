@@ -4,7 +4,7 @@ import { ConfigServiceAdapter } from './adapter/config.service.adapter';
 import {
     CONFIG_OPTIONS,
     ConfigModuleAsyncOptions,
-} from './types/config.module.types';
+} from './types';
 
 const ConfigServiceProvider: Provider = {
     provide: ConfigService,

@@ -3,7 +3,7 @@ import {
     GetCoursesFilterDto,
     GetCoursesUseCase,
 } from '../../src/application/use-case';
-import { CourseRepository, Id } from '../../src/domain';
+import { Course, CourseRepository, Id } from '../../src/domain';
 import { courseRepositoryMock } from './mock/course.repository.mock';
 import { CourseValidateDto } from './dto';
 
@@ -22,21 +22,17 @@ describe('GetCoursesUseCase', () => {
         useCase = app.get<GetCoursesUseCase>(GetCoursesUseCase);
 
         await Promise.all(
-            new Array(5).fill(undefined).map((_, i) =>
-                courseRepositoryMock.add({
-                    id: Id.generate(),
-                    coachId,
-                    description: '',
-                    name: '' + i,
-                }),
-            ),
+            new Array(5)
+                .fill(undefined)
+                .map((_, i) =>
+                    courseRepositoryMock.add(
+                        new Course(Id.generate(), '' + i, '', coachId),
+                    ),
+                ),
         );
-        await courseRepositoryMock.add({
-            id: Id.generate(),
-            coachId: Id.generate(),
-            description: '',
-            name: '0',
-        });
+        await courseRepositoryMock.add(
+            new Course(Id.generate(), '0', '', Id.generate()),
+        );
     });
 
     it('must be defined', () => {

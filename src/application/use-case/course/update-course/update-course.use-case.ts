@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Course, CourseRepository } from '../../../../domain';
+import { Course, CourseRepository, Id } from '../../../../domain';
 import { UpdateCourseUseCaseDto } from './update-course.use-case.dto';
 
 @Injectable()
@@ -11,25 +11,26 @@ export class UpdateCourseUseCase {
         if (!course) {
             throw new Error('Course not found');
         }
+        course.update(updates);
 
-        const updatedCourse = new Course(
-            id,
-            updates.name ?? course.name,
-            updates.description ?? course.description,
-            course.coachId,
-        );
+        await this.throwIfCourseExist(course);
+
+        return this.courseRepository.update(course);
+    }
+
+    private async throwIfCourseExist(course: Course): Promise<void> {
+        const { id, name, coachId } = course.unpack();
 
         const sameCourse = await this.courseRepository.get(
             {
-                coachId: updatedCourse.coachId,
-                name: updatedCourse.name,
+                coachId,
+                name,
+                notIds: [id],
             },
             { limit: 1 },
         );
-        if (sameCourse.some((course) => !course.id.isEqual(updatedCourse.id))) {
+        if (sameCourse.length) {
             throw new Error('Course already exist');
         }
-
-        return this.courseRepository.update(updatedCourse);
     }
 }

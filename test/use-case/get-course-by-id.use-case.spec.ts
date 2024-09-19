@@ -21,12 +21,9 @@ describe('GetCourseByIdUseCase', () => {
 
         useCase = app.get<GetCourseByIdUseCase>(GetCourseByIdUseCase);
 
-        await courseRepositoryMock.add({
-            id: courseId,
-            coachId: Id.generate(),
-            description: '',
-            name: '0',
-        });
+        await courseRepositoryMock.add(
+            new Course(courseId, '0', '', Id.generate()),
+        );
     });
 
     it('must be defined', () => {
@@ -37,7 +34,6 @@ describe('GetCourseByIdUseCase', () => {
         const course = await useCase.execute(
             new GetCourseByIdUseCaseDto(courseId),
         );
-
         expect(course).not.toBeNull();
         CourseValidateDto.validate(course as Course);
     });

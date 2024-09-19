@@ -8,7 +8,7 @@ import {
     validateSync,
 } from 'class-validator';
 
-export class CourseValidateDto extends Course {
+export class CourseValidateDto {
     @Type(() => IdValidateDto)
     @ValidateNested()
     id: IdValidateDto;

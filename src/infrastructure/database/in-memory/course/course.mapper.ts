@@ -3,11 +3,13 @@ import { CourseOrmEntity } from './course.orm-entity';
 
 export class CourseMapper {
     static toOrmEntity(course: Course): CourseOrmEntity {
+        const { id, name, description, coachId } = course.unpack();
+
         const ormCourse = new CourseOrmEntity(
-            course.id.value,
-            course.name,
-            course.description,
-            course.coachId.value,
+            id.value,
+            name,
+            description,
+            coachId.value,
         );
 
         return ormCourse;

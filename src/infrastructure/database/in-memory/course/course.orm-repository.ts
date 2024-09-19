@@ -59,7 +59,11 @@ export class CourseOrmRepository extends CourseRepository {
                 if (
                     (!filter.name || filter.name === ormCourse.name) &&
                     (!filter.coachId ||
-                        filter.coachId.value === ormCourse.coachId)
+                        filter.coachId.value === ormCourse.coachId) &&
+                    (!filter.notIds ||
+                        !filter.notIds.some((notId) =>
+                            new Id(ormCourse.id).isEqual(notId),
+                        ))
                 ) {
                     data.push(ormCourse);
                 }
@@ -71,8 +75,9 @@ export class CourseOrmRepository extends CourseRepository {
 
     update(course: Course): Promise<Course> {
         return new Promise((resolve, reject) => {
+            const courseId = course.unpack().id;
             const index = InMemoryDatabase.data.findIndex(
-                (ormCourse) => ormCourse.id === course.id.value,
+                (ormCourse) => ormCourse.id === courseId.value,
             );
 
             if (index < 0) {

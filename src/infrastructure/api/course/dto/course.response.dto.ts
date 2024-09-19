@@ -10,11 +10,13 @@ export class CourseResponseDto {
     coachId: number;
 
     static fromEntity(entity: Course): CourseResponseDto {
+        const { id, name, description, coachId } = entity.unpack();
+
         const course = new CourseResponseDto();
-        course.id = entity.id.value;
-        course.name = entity.name;
-        course.description = entity.description;
-        course.coachId = entity.coachId.value;
+        course.id = id.value;
+        course.name = name;
+        course.description = description;
+        course.coachId = coachId.value;
 
         return course;
     }

@@ -34,7 +34,7 @@ describe('UpdateCourseUseCase', () => {
                 ),
             ),
         ).then((res) => {
-            courseId = (res[0] as Course).id;
+            courseId = (res[0] as Course).unpack().id;
         });
     });
 
@@ -50,7 +50,7 @@ describe('UpdateCourseUseCase', () => {
 
             const course = await useCase.execute(dto);
             CourseValidateDto.validate(course);
-            expect(course.id.isEqual(courseId)).toBeTruthy();
+            expectIfCourseIdEqual(course, courseId);
         });
 
         it('description', async () => {
@@ -60,7 +60,7 @@ describe('UpdateCourseUseCase', () => {
 
             const course = await useCase.execute(dto);
             CourseValidateDto.validate(course);
-            expect(course.id.isEqual(courseId)).toBeTruthy();
+            expectIfCourseIdEqual(course, courseId);
         });
 
         it('all fields', async () => {
@@ -71,19 +71,21 @@ describe('UpdateCourseUseCase', () => {
 
             const course = await useCase.execute(dto);
             CourseValidateDto.validate(course);
-            expect(course.id.isEqual(courseId)).toBeTruthy();
+            expectIfCourseIdEqual(course, courseId);
         });
     });
 
     it('bad id', async () => {
         const dto = new UpdateCourseUseCaseDto(Id.generate(), { name: '' });
-
         expect(() => useCase.execute(dto)).rejects.toThrow(Error);
     });
 
     it('updated course already exist', async () => {
         const dto = new UpdateCourseUseCaseDto(courseId, { name: '1' });
-
         expect(() => useCase.execute(dto)).rejects.toThrow(Error);
     });
 });
+
+function expectIfCourseIdEqual(course: Course, id: Id): void {
+    expect(id.isEqual(course.unpack().id)).toBeTruthy();
+}

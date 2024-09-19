@@ -31,7 +31,7 @@ describe('CreateCourseUseCase', () => {
 
         const course = await useCase.execute(dto);
         CourseValidateDto.validate(course);
-        expect(course.coachId.isEqual(coachId)).toBeTruthy();
+        expect(course.unpack().coachId.isEqual(coachId)).toBeTruthy();
     });
 
     it('failed try to create same course', async () => {

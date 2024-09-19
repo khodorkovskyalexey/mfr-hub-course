@@ -29,7 +29,7 @@ describe('DeleteCourseUseCase', () => {
                 }),
             )
             .then((course) => {
-                courseId = course.id;
+                courseId = course.unpack().id;
             });
     });
 

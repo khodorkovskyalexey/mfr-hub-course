@@ -1,4 +1,4 @@
-import { NodeEnvType } from '../types/enums';
+import { NodeEnvType } from '../types';
 
 export interface ApiConfig {
     auth: string;

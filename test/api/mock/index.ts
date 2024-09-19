@@ -4,25 +4,30 @@ import {
     GetCoursesUseCase,
     UpdateCourseUseCase,
 } from '../../../src/application/use-case';
+import { DeleteCourseUseCase } from '../../../src/application/use-case/course/delete-course';
 import { Id } from '../../../src/domain';
 import { courseUseCaseMocks } from './course.use-case.mock';
 
 export const mockProviders = [
     {
         provider: CreateCourseUseCase,
-        mock: courseUseCaseMocks.createCourse,
+        mock: courseUseCaseMocks.create,
     },
     {
         provider: GetCoursesUseCase,
-        mock: courseUseCaseMocks.getCourses,
+        mock: courseUseCaseMocks.get,
     },
     {
         provider: GetCourseByIdUseCase,
-        mock: courseUseCaseMocks.getCourseById,
+        mock: courseUseCaseMocks.getById,
     },
     {
         provider: UpdateCourseUseCase,
-        mock: courseUseCaseMocks.updateCourse,
+        mock: courseUseCaseMocks.update,
+    },
+    {
+        provider: DeleteCourseUseCase,
+        mock: courseUseCaseMocks.delete,
     },
 ];
 

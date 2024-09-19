@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     HttpStatus,
     Param,
@@ -27,6 +28,11 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Id } from '../../../domain';
 import { IdParameter } from '../common';
+import {
+    DeleteCourseUseCase,
+    DeleteCourseUseCaseDto,
+} from '../../../application/use-case/course/delete-course';
+import { SuccessResponseDto } from '../common/success-response.dto';
 
 @ApiTags('Course')
 @Controller({
@@ -39,6 +45,7 @@ export class CourseController {
         private readonly getCoursesUseCase: GetCoursesUseCase,
         private readonly updateCourseUseCase: UpdateCourseUseCase,
         private readonly getCourseByIdUseCase: GetCourseByIdUseCase,
+        private readonly deleteCourseUseCase: DeleteCourseUseCase,
     ) {}
 
     @ApiResponse({
@@ -104,5 +111,19 @@ export class CourseController {
         );
 
         return CourseResponseDto.fromEntity(course);
+    }
+
+    @ApiResponse({
+        status: HttpStatus.OK,
+        type: SuccessResponseDto,
+    })
+    @ApiOperation({ summary: 'Delete course' })
+    @Delete(':id')
+    async delete(@Param() { id }: IdParameter): Promise<SuccessResponseDto> {
+        await this.deleteCourseUseCase.execute(
+            new DeleteCourseUseCaseDto(new Id(id)),
+        );
+
+        return new SuccessResponseDto();
     }
 }

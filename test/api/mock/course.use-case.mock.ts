@@ -6,9 +6,10 @@ import {
     UpdateCourseUseCaseDto,
 } from '../../../src/application/use-case';
 import { Course } from '../../../src/domain';
+import { SuccessResponseDto } from '../../../src/infrastructure/api/common/success-response.dto';
 
 export const courseUseCaseMocks = {
-    createCourse: {
+    create: {
         execute: (dto: CreateCourseUseCaseDto): Course => {
             return new Course(
                 mockIds.id,
@@ -18,7 +19,7 @@ export const courseUseCaseMocks = {
             );
         },
     },
-    getCourses: {
+    get: {
         execute: (filter: GetCoursesFilterDto): Course[] => {
             if (filter.coachId && filter.coachId.value !== 1) {
                 return [];
@@ -34,7 +35,7 @@ export const courseUseCaseMocks = {
             ];
         },
     },
-    getCourseById: {
+    getById: {
         execute: ({ id }: GetCourseByIdUseCaseDto): Course => {
             return new Course(
                 id,
@@ -44,7 +45,7 @@ export const courseUseCaseMocks = {
             );
         },
     },
-    updateCourse: {
+    update: {
         execute: ({ id }: UpdateCourseUseCaseDto): Course => {
             return new Course(
                 id,
@@ -52,6 +53,11 @@ export const courseUseCaseMocks = {
                 mockIds.description,
                 mockIds.coachId,
             );
+        },
+    },
+    delete: {
+        execute: () => {
+            return new SuccessResponseDto();
         },
     },
 };

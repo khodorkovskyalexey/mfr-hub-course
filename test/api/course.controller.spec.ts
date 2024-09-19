@@ -5,6 +5,7 @@ import { Course, Id } from '../../src/domain';
 import { ApiModule } from '../../src/infrastructure/api/api.module';
 import { mockIds, mockProviders } from './mock';
 import { CourseResponseDto } from '../../src/infrastructure/api/course/dto';
+import { SuccessResponseDto } from '../../src/infrastructure/api/common/success-response.dto';
 
 describe('CourseController', () => {
     let app: INestApplication;
@@ -208,6 +209,26 @@ describe('CourseController', () => {
                 .expect(400)
                 .expect((res) => {
                     expect(res.body.message?.length).toBe(2);
+                });
+        });
+    });
+
+    describe('DELETE /courses/:id', () => {
+        it('success', async () => {
+            return request(app.getHttpServer())
+                .delete(`/courses/${mockIds.id.value}`)
+                .expect(200)
+                .expect((res) => {
+                    expect(res.body).toEqual(new SuccessResponseDto());
+                });
+        });
+
+        it('bad id', async () => {
+            return request(app.getHttpServer())
+                .patch('/courses/bad_id')
+                .expect(400)
+                .expect((res) => {
+                    expect(res.body.message?.length).toBe(1);
                 });
         });
     });

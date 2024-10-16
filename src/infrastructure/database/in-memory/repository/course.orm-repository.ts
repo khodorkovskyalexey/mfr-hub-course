@@ -6,9 +6,9 @@ import {
     GetCourseOptions,
     Id,
 } from '../../../../domain';
-import { CourseMapper } from './course.mapper';
+import { CourseMapper } from '../entity/course/course.mapper';
 import { InMemoryDatabase } from '../in-memory.database';
-import { CourseOrmEntity } from './course.orm-entity';
+import { CourseOrmEntity } from '../entity/course/course.orm-entity';
 
 @Injectable()
 export class CourseOrmRepository extends CourseRepository {

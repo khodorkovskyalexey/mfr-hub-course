@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { CourseRepository } from '../../domain';
-import { CourseOrmRepository } from './in-memory/course/course.orm-repository';
+import { CourseOrmRepository } from './in-memory/repository/course.orm-repository';
 
 const CourseRepositoryProvider = {
     provide: CourseRepository,

@@ -3,7 +3,7 @@ import {
     GetCourseByIdUseCase,
     GetCourseByIdUseCaseDto,
 } from '../../src/application/use-case';
-import { Course, CourseRepository, Id } from '../../src/domain';
+import { Course, CourseRepository, Id, Practice, Url } from '../../src/domain';
 import { courseRepositoryMock } from './mock/course.repository.mock';
 import { CourseValidateDto } from './dto';
 
@@ -22,7 +22,26 @@ describe('GetCourseByIdUseCase', () => {
         useCase = app.get<GetCourseByIdUseCase>(GetCourseByIdUseCase);
 
         await courseRepositoryMock.add(
-            new Course(courseId, '0', '', Id.generate()),
+            new Course({
+                id: courseId,
+                name: '0',
+                description: '',
+                coachId: Id.generate(),
+                practices: [
+                    new Practice({
+                        id: Id.generate(),
+                        name: 'Practice1',
+                        description: '',
+                        url: new Url('www.mfr.hub/1'),
+                    }),
+                    new Practice({
+                        id: Id.generate(),
+                        name: 'Practice2',
+                        description: '',
+                        url: new Url('www.mfr.hub/2'),
+                    }),
+                ],
+            }),
         );
     });
 
@@ -35,6 +54,7 @@ describe('GetCourseByIdUseCase', () => {
             new GetCourseByIdUseCaseDto(courseId),
         );
         expect(course).not.toBeNull();
+        expect(course.unpack().practices.length).toBe(2);
         CourseValidateDto.validate(course as Course);
     });
 

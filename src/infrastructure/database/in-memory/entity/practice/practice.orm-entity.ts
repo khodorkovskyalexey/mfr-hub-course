@@ -1,8 +1,8 @@
-export class CourseOrmEntity {
+export class PracticeOrmEntity {
     constructor(
         readonly id: number,
         readonly name: string,
         readonly description: string,
-        readonly coachId: number,
+        readonly url: string,
     ) {}
 }

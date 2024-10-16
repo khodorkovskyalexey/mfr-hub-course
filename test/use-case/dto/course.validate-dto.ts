@@ -7,6 +7,7 @@ import {
     ValidateNested,
     validateSync,
 } from 'class-validator';
+import { PracticeValidateDto } from './practices.validate-dto';
 
 export class CourseValidateDto {
     @Type(() => IdValidateDto)
@@ -22,6 +23,10 @@ export class CourseValidateDto {
     @Type(() => IdValidateDto)
     @ValidateNested()
     coachId: IdValidateDto;
+
+    @Type(() => PracticeValidateDto)
+    @ValidateNested()
+    practices: PracticeValidateDto;
 
     static validate(course: Course) {
         const dto = plainToClass(CourseValidateDto, course);

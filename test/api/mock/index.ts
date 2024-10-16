@@ -1,11 +1,12 @@
 import {
+    AddPracticeUseCase,
     CreateCourseUseCase,
     GetCourseByIdUseCase,
     GetCoursesUseCase,
     UpdateCourseUseCase,
 } from '../../../src/application/use-case';
 import { DeleteCourseUseCase } from '../../../src/application/use-case/course/delete-course';
-import { Id } from '../../../src/domain';
+import { Id, Practice, Url } from '../../../src/domain';
 import { courseUseCaseMocks } from './course.use-case.mock';
 
 export const mockProviders = [
@@ -29,11 +30,23 @@ export const mockProviders = [
         provider: DeleteCourseUseCase,
         mock: courseUseCaseMocks.delete,
     },
+    {
+        provider: AddPracticeUseCase,
+        mock: courseUseCaseMocks.addPractice,
+    },
 ];
 
-export const mockIds = {
+export const mockCourse = {
     id: Id.generate(),
     coachId: Id.generate(),
     name: '1',
     description: '',
+    practices: [
+        new Practice({
+            id: Id.generate(),
+            name: 'Practice1',
+            description: '',
+            url: new Url('www.mfr.hub'),
+        }),
+    ],
 };

@@ -1,10 +1,7 @@
 import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
 import { ConfigService } from './port/config.service';
 import { ConfigServiceAdapter } from './adapter/config.service.adapter';
-import {
-    CONFIG_OPTIONS,
-    ConfigModuleAsyncOptions,
-} from './types';
+import { CONFIG_OPTIONS, ConfigModuleAsyncOptions } from './types';
 
 const ConfigServiceProvider: Provider = {
     provide: ConfigService,

@@ -22,16 +22,26 @@ describe('GetCoursesUseCase', () => {
         useCase = app.get<GetCoursesUseCase>(GetCoursesUseCase);
 
         await Promise.all(
-            new Array(5)
-                .fill(undefined)
-                .map((_, i) =>
-                    courseRepositoryMock.add(
-                        new Course(Id.generate(), '' + i, '', coachId),
-                    ),
+            new Array(5).fill(undefined).map((_, i) =>
+                courseRepositoryMock.add(
+                    new Course({
+                        id: Id.generate(),
+                        name: '' + i,
+                        description: '',
+                        coachId,
+                        practices: [],
+                    }),
                 ),
+            ),
         );
         await courseRepositoryMock.add(
-            new Course(Id.generate(), '0', '', Id.generate()),
+            new Course({
+                id: Id.generate(),
+                name: '0',
+                description: '',
+                coachId: Id.generate(),
+                practices: [],
+            }),
         );
     });
 

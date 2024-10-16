@@ -1,22 +1,24 @@
-import { mockIds } from '.';
+import { mockCourse } from '.';
 import {
+    AddPracticeUseCaseDto,
     CreateCourseUseCaseDto,
     GetCourseByIdUseCaseDto,
     GetCoursesFilterDto,
     UpdateCourseUseCaseDto,
 } from '../../../src/application/use-case';
 import { Course } from '../../../src/domain';
-import { SuccessResponseDto } from '../../../src/infrastructure/api/common/success-response.dto';
+import { SuccessResponseDto } from '../../../src/infrastructure/api/common';
 
 export const courseUseCaseMocks = {
     create: {
         execute: (dto: CreateCourseUseCaseDto): Course => {
-            return new Course(
-                mockIds.id,
-                dto.name,
-                dto.description,
-                dto.coachId,
-            );
+            return new Course({
+                id: mockCourse.id,
+                name: dto.name,
+                description: dto.description,
+                coachId: dto.coachId,
+                practices: [],
+            });
         },
     },
     get: {
@@ -26,38 +28,52 @@ export const courseUseCaseMocks = {
             }
 
             return [
-                new Course(
-                    mockIds.id,
-                    mockIds.name,
-                    mockIds.description,
-                    mockIds.coachId,
-                ),
+                new Course({
+                    id: mockCourse.id,
+                    name: mockCourse.name,
+                    description: mockCourse.description,
+                    coachId: mockCourse.coachId,
+                    practices: mockCourse.practices,
+                }),
             ];
         },
     },
     getById: {
         execute: ({ id }: GetCourseByIdUseCaseDto): Course => {
-            return new Course(
+            return new Course({
                 id,
-                mockIds.name,
-                mockIds.description,
-                mockIds.coachId,
-            );
+                name: mockCourse.name,
+                description: mockCourse.description,
+                coachId: mockCourse.coachId,
+                practices: mockCourse.practices,
+            });
         },
     },
     update: {
         execute: ({ id }: UpdateCourseUseCaseDto): Course => {
-            return new Course(
+            return new Course({
                 id,
-                mockIds.name,
-                mockIds.description,
-                mockIds.coachId,
-            );
+                name: mockCourse.name,
+                description: mockCourse.description,
+                coachId: mockCourse.coachId,
+                practices: mockCourse.practices,
+            });
         },
     },
     delete: {
         execute: () => {
             return new SuccessResponseDto();
+        },
+    },
+    addPractice: {
+        execute: ({ courseId }: AddPracticeUseCaseDto) => {
+            return new Course({
+                id: courseId,
+                name: mockCourse.name,
+                description: mockCourse.description,
+                coachId: mockCourse.coachId,
+                practices: mockCourse.practices,
+            });
         },
     },
 };

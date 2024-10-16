@@ -3,9 +3,9 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Course, Id } from '../../src/domain';
 import { ApiModule } from '../../src/infrastructure/api/api.module';
-import { mockIds, mockProviders } from './mock';
+import { mockCourse, mockProviders } from './mock';
 import { CourseResponseDto } from '../../src/infrastructure/api/course/dto';
-import { SuccessResponseDto } from '../../src/infrastructure/api/common/success-response.dto';
+import { SuccessResponseDto } from '../../src/infrastructure/api/common';
 
 describe('CourseController', () => {
     let app: INestApplication;
@@ -38,7 +38,7 @@ describe('CourseController', () => {
             const dto = {
                 name: '1',
                 description: '',
-                coachId: mockIds.coachId.value,
+                coachId: mockCourse.coachId.value,
             };
 
             return request(app.getHttpServer())
@@ -48,12 +48,13 @@ describe('CourseController', () => {
                 .expect((res) => {
                     expect(res.body).toEqual(
                         CourseResponseDto.fromEntity(
-                            new Course(
-                                mockIds.id,
-                                dto.name,
-                                dto.description,
-                                new Id(dto.coachId),
-                            ),
+                            new Course({
+                                id: mockCourse.id,
+                                name: dto.name,
+                                description: dto.description,
+                                coachId: new Id(dto.coachId),
+                                practices: [],
+                            }),
                         ),
                     );
                 });
@@ -85,12 +86,13 @@ describe('CourseController', () => {
                     expect(res.body.length).toBe(1);
                     expect(res.body[0]).toEqual(
                         CourseResponseDto.fromEntity(
-                            new Course(
-                                mockIds.id,
-                                mockIds.name,
-                                mockIds.description,
-                                mockIds.coachId,
-                            ),
+                            new Course({
+                                id: mockCourse.id,
+                                name: mockCourse.name,
+                                description: mockCourse.description,
+                                coachId: mockCourse.coachId,
+                                practices: [],
+                            }),
                         ),
                     );
                 });
@@ -104,12 +106,13 @@ describe('CourseController', () => {
                     expect(res.body.length).toBe(1);
                     expect(res.body[0]).toEqual(
                         CourseResponseDto.fromEntity(
-                            new Course(
-                                mockIds.id,
-                                mockIds.name,
-                                mockIds.description,
-                                mockIds.coachId,
-                            ),
+                            new Course({
+                                id: mockCourse.id,
+                                name: mockCourse.name,
+                                description: mockCourse.description,
+                                coachId: mockCourse.coachId,
+                                practices: [],
+                            }),
                         ),
                     );
                 });
@@ -137,17 +140,18 @@ describe('CourseController', () => {
     describe('GET /courses/:id', () => {
         it('success', async () => {
             return request(app.getHttpServer())
-                .get(`/courses/${mockIds.id.value}`)
+                .get(`/courses/${mockCourse.id.value}`)
                 .expect(200)
                 .expect((res) => {
                     expect(res.body).toEqual(
                         CourseResponseDto.fromEntity(
-                            new Course(
-                                mockIds.id,
-                                mockIds.name,
-                                mockIds.description,
-                                mockIds.coachId,
-                            ),
+                            new Course({
+                                id: mockCourse.id,
+                                name: mockCourse.name,
+                                description: mockCourse.description,
+                                coachId: mockCourse.coachId,
+                                practices: [],
+                            }),
                         ),
                     );
                 });
@@ -171,13 +175,19 @@ describe('CourseController', () => {
             };
 
             return request(app.getHttpServer())
-                .patch(`/courses/${mockIds.id.value}`)
+                .patch(`/courses/${mockCourse.id.value}`)
                 .send(dto)
                 .expect(200)
                 .expect((res) => {
                     expect(res.body).toEqual(
                         CourseResponseDto.fromEntity(
-                            new Course(mockIds.id, '1', '', mockIds.coachId),
+                            new Course({
+                                id: mockCourse.id,
+                                name: '1',
+                                description: '',
+                                coachId: mockCourse.coachId,
+                                practices: [],
+                            }),
                         ),
                     );
                 });
@@ -204,7 +214,7 @@ describe('CourseController', () => {
             };
 
             return request(app.getHttpServer())
-                .patch(`/courses/${mockIds.id.value}`)
+                .patch(`/courses/${mockCourse.id.value}`)
                 .send(dto)
                 .expect(400)
                 .expect((res) => {
@@ -216,7 +226,7 @@ describe('CourseController', () => {
     describe('DELETE /courses/:id', () => {
         it('success', async () => {
             return request(app.getHttpServer())
-                .delete(`/courses/${mockIds.id.value}`)
+                .delete(`/courses/${mockCourse.id.value}`)
                 .expect(200)
                 .expect((res) => {
                     expect(res.body).toEqual(new SuccessResponseDto());

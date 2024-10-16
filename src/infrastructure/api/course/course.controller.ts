@@ -18,6 +18,8 @@ import {
     GetCoursesFilterDto,
     GetCourseByIdUseCase,
     GetCourseByIdUseCaseDto,
+    DeleteCourseUseCase,
+    DeleteCourseUseCaseDto,
 } from '../../../application/use-case';
 import {
     CourseResponseDto,
@@ -27,12 +29,7 @@ import {
 } from './dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Id } from '../../../domain';
-import { IdParameter } from '../common';
-import {
-    DeleteCourseUseCase,
-    DeleteCourseUseCaseDto,
-} from '../../../application/use-case/course/delete-course';
-import { SuccessResponseDto } from '../common/success-response.dto';
+import { IdParameter, SuccessResponseDto } from '../common';
 
 @ApiTags('Course')
 @Controller({

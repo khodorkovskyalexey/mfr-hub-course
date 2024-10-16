@@ -4,6 +4,9 @@ import { GetCoursesUseCase } from './get-courses';
 import { UpdateCourseUseCase } from './update-course';
 import { GetCourseByIdUseCase } from './get-course-by-id';
 import { DeleteCourseUseCase } from './delete-course';
+import { AddPracticeUseCase } from './add-practice';
+
+const practiceUseCases = [AddPracticeUseCase];
 
 const useCases = [
     CreateCourseUseCase,
@@ -11,6 +14,7 @@ const useCases = [
     UpdateCourseUseCase,
     GetCourseByIdUseCase,
     DeleteCourseUseCase,
+    ...practiceUseCases,
 ];
 
 @Module({

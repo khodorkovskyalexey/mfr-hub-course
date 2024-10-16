@@ -1,5 +1,5 @@
 import { Course } from '../entity';
-import { Id } from '../id';
+import { Id } from '../types';
 
 export interface GetCourseFilter {
     coachId?: Id;

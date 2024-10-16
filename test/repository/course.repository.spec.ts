@@ -97,7 +97,13 @@ describe('CourseRepositoryImplementation', () => {
     describe('update', () => {
         it('success', async () => {
             const { id, name, coachId } = course.unpack();
-            const data = new Course(id, name, 'New description', coachId);
+            const data = new Course({
+                id,
+                name,
+                description: 'New description',
+                coachId,
+                practices: [],
+            });
 
             const updatedCourse = await repository.update(data);
             const { id: updatedId, description: updatedDescription } =

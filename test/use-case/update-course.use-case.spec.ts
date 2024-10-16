@@ -72,6 +72,7 @@ describe('UpdateCourseUseCase', () => {
             const course = await useCase.execute(dto);
             CourseValidateDto.validate(course);
             expectIfCourseIdEqual(course, courseId);
+            expect(course.unpack().practices.length).toBe(0);
         });
     });
 

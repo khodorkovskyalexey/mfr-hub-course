@@ -1,10 +1,11 @@
-import { Test } from '@nestjs/testing';
+import 'reflect-metadata';
 import { IAM } from '../../src/infrastructure/api/common';
 import { Id } from '../../src/domain';
 import { executionContextMock } from './mock/execution-context.mock';
 import { ExecutionContext } from '@nestjs/common';
 import { ROUTE_ARGS_METADATA } from '@nestjs/common/constants';
 
+// eslint-disable-next-line  @typescript-eslint/ban-types
 function getParamDecoratorFactory(decorator: Function): Function {
     class Test {
         public test(@decorator() _) {}
@@ -14,11 +15,11 @@ function getParamDecoratorFactory(decorator: Function): Function {
 }
 
 describe('IAM', () => {
+    // eslint-disable-next-line  @typescript-eslint/ban-types
     let iam: Function;
     let ctx: ExecutionContext;
 
     beforeAll(async () => {
-        await Test.createTestingModule({}).compile();
         iam = getParamDecoratorFactory(IAM);
         ctx = executionContextMock();
     });

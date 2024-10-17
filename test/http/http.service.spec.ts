@@ -1,10 +1,8 @@
-import { HttpService as AxiosHttpService } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpModule, HttpService } from '../../src/infrastructure/http';
-import { Observable } from 'rxjs';
-import { AxiosResponse } from 'axios';
 import { Equals } from 'class-validator';
 import { Expose } from 'class-transformer';
+import { axiosGetMock } from './mock/axios-get.mock';
 
 class ValidateDto {
     @Expose()
@@ -25,24 +23,18 @@ describe('HttpServicePort', () => {
 
         service = app.get<HttpService>(HttpService);
 
-        jest.spyOn(AxiosHttpService.prototype, 'get').mockImplementation(
-            (url, config) =>
-                new Observable((subscribe) => {
-                    const response =
-                        url !== '/get-null'
-                            ? {
-                                  status: 200,
-                                  data: {
-                                      ok: url !== '/bad-url',
-                                      jwt: config?.headers?.Authorization,
-                                  },
-                                  config: { headers: config?.headers },
-                              }
-                            : null;
-
-                    subscribe.next(response as AxiosResponse);
-                }),
-        );
+        axiosGetMock((url, config) => {
+            return url !== '/get-null'
+                ? {
+                      status: 200,
+                      data: {
+                          ok: url !== '/bad-url',
+                          jwt: config?.headers?.Authorization,
+                      },
+                      config: { headers: config?.headers },
+                  }
+                : null;
+        });
     });
 
     it('must be defined', () => {

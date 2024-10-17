@@ -1,12 +1,6 @@
-import { Type, plainToClass } from 'class-transformer';
-import { Practice } from '../../../src/domain';
+import { Type } from 'class-transformer';
 import { IdValidateDto } from './id.validate-dto';
-import {
-    IsString,
-    Length,
-    ValidateNested,
-    validateSync,
-} from 'class-validator';
+import { IsString, Length, ValidateNested } from 'class-validator';
 import { UrlValidateDto } from './url.validate-dto';
 
 export class PracticeValidateDto {

@@ -4,6 +4,8 @@ import { Test } from '@nestjs/testing';
 import { ApiModule } from '../../src/infrastructure/api/api.module';
 import { mockProviders } from './mock';
 import { SuccessResponseDto } from '../../src/infrastructure/api/common';
+import { AuthModule } from '../../src/infrastructure/auth/auth.module';
+import { axiosGetMock } from '../http/mock/axios-get.mock';
 
 describe('PracticeController', () => {
     let app: INestApplication;
@@ -11,7 +13,7 @@ describe('PracticeController', () => {
 
     beforeAll(async () => {
         const builder = Test.createTestingModule({
-            imports: [ApiModule],
+            imports: [ApiModule, AuthModule],
         });
 
         mockProviders.forEach(({ provider, mock }) => {
@@ -26,6 +28,17 @@ describe('PracticeController', () => {
         );
 
         await app.init();
+
+        axiosGetMock((_, config) => {
+            return {
+                status: 200,
+                data: {
+                    id: 1,
+                    username: 'terminator',
+                },
+                config: { headers: config?.headers },
+            };
+        });
     });
 
     afterAll(async () => {

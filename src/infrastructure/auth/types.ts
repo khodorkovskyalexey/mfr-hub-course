@@ -1,19 +1,18 @@
-import { Expose, Transform, plainToClass } from 'class-transformer';
+import { Expose, Transform, Type, plainToClass } from 'class-transformer';
 import { Id } from '../../domain';
 import { IsPositive, IsString, ValidateNested } from 'class-validator';
 
 export class IdDto extends Id {
-    @Expose()
+    @Expose({ name: 'id' })
     @IsPositive()
-    id: number;
+    @Type(() => Number)
+    value: number;
 }
 
 export class AuthUser {
     @Expose()
     @ValidateNested()
-    @Transform(({ obj }) =>
-        plainToClass(IdDto, obj, { excludeExtraneousValues: true }),
-    )
+    @Transform(({ obj }) => plainToClass(IdDto, obj))
     id: IdDto;
 
     @Expose({ name: 'username' })

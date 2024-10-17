@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Course, CourseRepository, Id } from '../../../../domain';
+import { Course, CourseRepository } from '../../../../domain';
 import { UpdateCourseUseCaseDto } from './update-course.use-case.dto';
 
 @Injectable()

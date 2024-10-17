@@ -3,10 +3,10 @@ import { HttpService } from '../port/http.service';
 import { HttpOptions, HttpResponse } from '../types';
 import { HttpService as AxiosHttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { plainToClass } from 'class-transformer';
 import { ClassConstructor } from '../../../shared/types';
-import { validateSync } from 'class-validator';
 import { AxiosResponse } from 'axios';
+import { plainToClass } from 'class-transformer';
+import { validateSync } from 'class-validator';
 
 @Injectable()
 export class HttpAdatperService extends HttpService {
@@ -36,7 +36,7 @@ export class HttpAdatperService extends HttpService {
 
         let data: T = response.data;
         if (validatorClass) {
-            data = plainToClass(validatorClass, response.data, {
+            data = plainToClass(validatorClass, data, {
                 excludeExtraneousValues: true,
             });
 

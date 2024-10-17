@@ -7,6 +7,7 @@ import {
 } from '../../../src/application/use-case';
 import { DeleteCourseUseCase } from '../../../src/application/use-case/course/delete-course';
 import { Id, Practice, Url } from '../../../src/domain';
+import { ConfigService } from '../../../src/infrastructure/config';
 import { courseUseCaseMocks } from './course.use-case.mock';
 
 export const mockProviders = [
@@ -33,6 +34,11 @@ export const mockProviders = [
     {
         provider: AddPracticeUseCase,
         mock: courseUseCaseMocks.addPractice,
+    },
+    // need for tests working without .env file (used in AuthModule)
+    {
+        provider: ConfigService,
+        mock: { api: { auth: '/' } },
     },
 ];
 

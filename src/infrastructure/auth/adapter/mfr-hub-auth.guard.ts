@@ -1,17 +1,15 @@
 import { ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '../../config';
 import { AuthUser } from '../types';
-import { AuthGuard } from '../port/auth.guard';
+import { BaseAuthGuard } from '../port/auth.guard';
 import { HttpService } from '../../http';
 
 @Injectable()
-export class MfrHubAuthGuard extends AuthGuard {
+export class MfrHubAuthGuard implements BaseAuthGuard {
     constructor(
         private readonly configService: ConfigService,
         private readonly httpService: HttpService,
-    ) {
-        super();
-    }
+    ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest();

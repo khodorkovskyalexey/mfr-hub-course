@@ -1,4 +1,4 @@
-import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
+import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { ConfigService } from './port/config.service';
 import { ConfigServiceAdapter } from './adapter/config.service.adapter';
 import { CONFIG_OPTIONS, ConfigModuleAsyncOptions } from './types';
@@ -8,7 +8,6 @@ const ConfigServiceProvider: Provider = {
     useClass: ConfigServiceAdapter,
 };
 
-@Global()
 @Module({})
 export class ConfigModule {
     static forRoot(options: ConfigModuleAsyncOptions): DynamicModule {
